@@ -57,7 +57,34 @@
             @enderror
         </div>
 
-        <button type="submit" class="btn btn-success">Salva</button>
+        <div class="mb-3">
+            <h5>Seleziona tecnologia usata:</h5>
+            @foreach ($technologies as $technology)
+                <div class="p-1">
+
+                    @if ($errors->any())
+                        <input type="checkbox" id="technology_{{ $technology->id }}" name="technologies[]"
+                            value="{{ $technology->id }}" @if (in_array($technology->id, old('technologies', []))) checked @endif>
+                    @else
+                        <input type="checkbox" id="technology_{{ $technology->id }}" name="technologies[]"
+                            value="{{ $technology->id }}" @if ($post->technologies->contains($technology->id)) checked @endif>
+                    @endif
+
+                    <label class="form-lable" for="technology_{{ $technology->id }}">
+                        {{ $technology->name }}
+                    </label>
+                    <br>
+                </div>
+            @endforeach
+
+            @error('technologies')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salva</button>
         <a class="btn btn-secondary" href="{{ route('admin.posts.index') }}">Back</a>
 
     </form>

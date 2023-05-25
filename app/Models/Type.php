@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Type extends Model
 {
     use HasFactory;
+
+    // relazione one to many
     public function posts()
     {
         return $this->hasMany(Post::class);

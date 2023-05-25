@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use App\Models\Technology;
 use App\Models\Type;
 
 class PostController extends Controller
@@ -29,7 +30,8 @@ class PostController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.posts.create', compact('types'));
+        $technologies = Technology::all();
+        return view('admin.posts.create', compact('types', 'technologies'));
     }
 
     /**
@@ -49,6 +51,12 @@ class PostController extends Controller
         }
 
         $newPost = Post::create($validated_data); //con la create si fa la fill e la save con un comando solo
+
+
+        if ($request->has('technologies')) {
+
+            $newPost->technologies()->attach($request->technologies);
+        }
         return redirect()->route('admin.posts.show', ['post' => $newPost->slug]);
     }
 
@@ -72,7 +80,9 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $types = Type::all();
-        return view('admin.posts.edit', compact('post', 'types'));
+        $technologies = Technology::all();
+
+        return view('admin.posts.edit', compact('post', 'types', 'technologies'));
     }
 
     /**
@@ -91,6 +101,8 @@ class PostController extends Controller
         if ($checkPost) {
             return back()->withInput()->withErrors(['slug' => 'Impossibile creare slug,scegli un altro titolo!']);
         }
+
+        $post->technologies()->sync($request->technologies);
 
         $post->update($validated_data);
 

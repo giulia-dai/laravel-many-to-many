@@ -21,8 +21,17 @@ class Post extends Model
     {
         return Str::slug($title, '-');
     }
+
+    // relazione one to many
     public function type()
     {
         return $this->belongsTo(Type::class);
+    }
+
+    // relazione many to many
+
+    public function technologies()
+    {
+        return $this->belongsToMany(Technology::class);
     }
 }

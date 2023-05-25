@@ -9,6 +9,7 @@
                 <th scope="col">Titolo</th>
                 <th scope="col">Slug</th>
                 <th scope="col">Categoria</th>
+                <th scope="col">Tecnologie</th>
                 <th scope="col">Azioni</th>
 
             </tr>
@@ -20,6 +21,12 @@
                     <td>{{ $post->title }}</td>
                     <td>{{ $post->slug }}</td>
                     <td>{{ $post->type?->name }}</td>
+                    <td>
+                        @foreach ($post->technologies as $technology)
+                            <span class="text-white badge rounded-pill text-bg-info"> {{ $technology->name }}</span>
+                        @endforeach
+                    </td>
+
 
                     <td>
                         <a href="{{ route('admin.posts.show', $post->slug) }}" class="btn btn-success">See More</a>

@@ -9,6 +9,10 @@
 
     <h6>Type: {{ $post->type ? $post->type->name : 'Nessuna categoria selezionata' }}</h6>
 
+    @foreach ($post->technologies as $technology)
+        <span class="text-white badge rounded-pill text-bg-info"> {{ $technology->name }}</span>
+    @endforeach
+
     @if ($post->cover_img)
         <img class="img-thumbnail" src="{{ $post->cover_img }}" alt="{{ $post->title }}">
     @endif
