@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PostSeeder::class);
         $this->call(TypeSeeder::class);
+        $this->call(TechnologySeeder::class);
+
 
         // \App\Models\User::factory(10)->create();
 
