@@ -24,17 +24,18 @@ Route::get('/', function () {
     return view('welcome', compact('posts'));
 });
 
-
-
-
 Route::middleware(['auth', 'verified'])
     ->name('admin.')
     ->prefix('admin')
     ->group(function () {
+
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
         Route::resource('posts', PostController::class)->parameters([
             'posts' => 'post:slug'
         ]);
+
+        Route::get('posts/{slug}/deleteImage', [PostController::class, 'deleteImage'])->name('posts.deleteImage');
 
         Route::resource('types', TypeController::class)->parameters([
             'types' => 'type:slug'

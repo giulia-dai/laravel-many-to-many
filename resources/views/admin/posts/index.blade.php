@@ -1,7 +1,8 @@
 @extends('layouts.admin')
 @section('page-title', 'Elenco progetti')
 @section('content')
-    <a href="{{ route('admin.posts.create') }}" class="btn-primary btn">Crea nuovo progetto</a>
+    <a href="{{ route('admin.posts.create') }}" class="btn-primary btn">
+        Crea nuovo progetto</a>
     <table class="table">
         <thead>
             <tr>
@@ -10,7 +11,9 @@
                 <th scope="col">Slug</th>
                 <th scope="col">Categoria</th>
                 <th scope="col">Tecnologie</th>
+                <th scope="col">Immagine</th>
                 <th scope="col">Azioni</th>
+
 
             </tr>
         </thead>
@@ -26,6 +29,13 @@
                             <span class="text-white badge rounded-pill text-bg-info"> {{ $technology->name }}</span>
                         @endforeach
                     </td>
+                    <td>
+                        @if ($post->cover_img)
+                            <img class="img-thumbnail img_small" src="{{ asset('storage/' . $post->cover_img) }}"
+                                alt="{{ $post->title }}">
+                        @endif
+                    </td>
+
 
 
                     <td>

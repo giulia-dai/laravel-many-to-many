@@ -26,10 +26,10 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             'title' => 'required|max:200|unique:posts',
-            'cover_img' => 'nullable|max:255|url',
             'description' => 'nullable',
             'type_id' => 'nullable|exists:types,id',
             'technologies' => 'exists:technologies,id',
+            'cover_img' => 'nullable|image|max:1024'
 
         ];
     }

@@ -1,1 +1,17 @@
-@import '~bootstrap/scss/bootstrap'
+@import '~bootstrap/scss/bootstrap';
+
+.img_small {
+    width: 80px;
+}
+
+.my_img {
+    width: 400px;
+    margin: 1rem;
+    position: relative;
+}
+
+.my_delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

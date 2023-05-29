@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <form action="{{ route('admin.posts.store') }}" method="POST">
+    <form enctype="multipart/form-data" action="{{ route('admin.posts.store') }}" method="POST">
         @csrf
         <div class="mb-3">
             <label for="title" class="form-label">titolo</label>
@@ -19,9 +19,11 @@
         </div>
 
         <div class="mb-3">
-            <label for="cover_img" class="form-label">URL immagine</label>
-            <input type="text" class="form-control @error('cover_img') is-invalid @enderror " id="cover_img"
-                name="cover_img" value="{{ old('cover_img') }}">
+
+            <label for="cover_img" class="form-label">Seleziona immagine di copertina</label>
+
+            <input type="file" class="form-control @error('cover_img') is-invalid @enderror " id="cover_img"
+                name="cover_img">
             @error('cover_img')
                 <div class="invalid-feedback">
                     {{ $message }}

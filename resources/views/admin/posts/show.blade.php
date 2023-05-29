@@ -14,7 +14,7 @@
     @endforeach
 
     @if ($post->cover_img)
-        <img class="img-thumbnail" src="{{ $post->cover_img }}" alt="{{ $post->title }}">
+        <img class="img-thumbnail my_img" src="{{ asset('storage/' . $post->cover_img) }}" alt="{{ $post->title }}">
     @endif
     <p>{{ $post->description }}</p>
 

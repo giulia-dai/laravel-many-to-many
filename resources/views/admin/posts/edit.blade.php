@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <form method="POST" action="{{ route('admin.posts.update', ['post' => $post->slug]) }}">
+    <form enctype="multipart/form-data" method="POST" action="{{ route('admin.posts.update', ['post' => $post->slug]) }}">
 
         @csrf
         @method('PUT')
@@ -21,9 +21,20 @@
         </div>
 
         <div class="mb-3">
-            <label for="cover_img" class="form-label">URL immagine</label>
-            <input type="text" class="form-control @error('cover_img') is-invalid @enderror " id="cover_img"
-                name="cover_image" value="{{ old('cover_img', $post->cover_image) }}">
+            <label for="cover_img" class="form-label">Seleziona immagine di copertina</label>
+
+            <div class="my_img">
+                @if ($post->cover_img)
+                    <img class="img-thumbnail" src="{{ asset('storage/' . $post->cover_img) }}" alt="{{ $post->title }}">
+                    <a href="{{ route('admin.posts.deleteImage', ['slug' => $post->slug]) }}"
+                        class="btn btn-danger my_delete">X</a>
+                @endif
+
+            </div>
+
+            <input type="file" class="form-control @error('cover_img') is-invalid @enderror " id="cover_img"
+                name="cover_img">
+
             @error('cover_img')
                 <div class="invalid-feedback">
                     {{ $message }}

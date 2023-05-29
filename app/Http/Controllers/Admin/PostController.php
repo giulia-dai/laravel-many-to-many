@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\Technology;
 use App\Models\Type;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -43,11 +44,18 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $validated_data = $request->validated();
+
         $validated_data['slug'] = Post::generateSlug($request->title);
 
         $checkPost = Post::where('slug', $validated_data['slug'])->first();
         if ($checkPost) {
             return back()->withInput()->withErrors(['slug' => 'Impossibile creare slug,scegli un altro titolo!']);
+        }
+
+
+        if ($request->hasFile('cover_img')) {
+            $path = Storage::put('cover', $request->cover_img);
+            $validated_data['cover_img'] = $path;
         }
 
         $newPost = Post::create($validated_data); //con la create si fa la fill e la save con un comando solo
@@ -102,6 +110,19 @@ class PostController extends Controller
             return back()->withInput()->withErrors(['slug' => 'Impossibile creare slug,scegli un altro titolo!']);
         }
 
+
+        if ($request->hasFile('cover_img')) {
+
+            //se c'era già un file in precedenza cancellalo
+            if ($post->cover_img) {
+                Storage::delete($post->cover_img);
+            }
+
+            //poi carica la nuova immagine
+            $path = Storage::put('cover', $request->cover_img);
+            $validated_data['cover_img'] = $path;
+        };
+
         $post->technologies()->sync($request->technologies);
 
         $post->update($validated_data);
@@ -117,7 +138,28 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+
+        //così viene cancellato anche il file all'interno della cartella cover se presente
+        if ($post->cover_img) {
+            Storage::delete($post->cover_img);
+        }
+
         $post->delete();
         return redirect()->route('admin.posts.index');
+    }
+
+
+    public function deleteImage($slug)
+    {
+
+        $post = Post::where('slug', $slug)->firstOrFail();
+
+        if ($post->cover_img) {
+            Storage::delete($post->cover_img);
+            $post->cover_img = null;
+            $post->save();
+        }
+
+        return redirect()->route('admin.posts.edit', $post->slug);
     }
 }
